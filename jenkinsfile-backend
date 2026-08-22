@@ -31,15 +31,15 @@ pipeline {
             }
         }
 
-        // stage('SonarQubeAnalysis - user service') {
-        //     steps {
-        //         withSonarQubeEnv('sonar') {
-        //             dir('user-service') {
-        //                 sh 'mvn sonar:sonar'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('SonarQubeAnalysis - user service') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    dir('user-service') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
 
         // stage('Build Product-Service') {
         //     steps {
