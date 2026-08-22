@@ -111,16 +111,16 @@ pipeline {
             }
         }
 
-        // stage('Docker Build') {
-        //     steps {
-        //         sh '''
-        //         docker build -t user-service:latest ./user-service
-        //         docker build -t product-service:latest ./product-service 
-        //         docker build -t order-service:latest ./order-service
-        //         docker images
-        //         '''
-        //     }
-        // }
+        stage('Docker Build') {
+            steps {
+                sh '''
+                docker build -t user-service:${BUILD_NUMBER} ./user-service
+                docker build -t product-service:${BUILD_NUMBER} ./product-service 
+                docker build -t order-service:${BUILD_NUMBER} ./order-service
+                docker images
+                '''
+            }
+        }
 
         // stage('Push images to ECR') {
         //     steps {
