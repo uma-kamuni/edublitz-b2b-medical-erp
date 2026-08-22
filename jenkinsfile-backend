@@ -9,6 +9,9 @@ pipeline {
 
     environment {
         my_aws_credential = credentials('aws-access')
+        ECR_USER = '876358614994.dkr.ecr.eu-north-1.amazonaws.com/user-service'
+        ECR_PRODUCT = '876358614994.dkr.ecr.eu-north-1.amazonaws.com/product-service'
+        ECR_ORDER = '876358614994.dkr.ecr.eu-north-1.amazonaws.com/order-service'
     }
 
     stages {
@@ -122,19 +125,27 @@ pipeline {
             }
         }
 
+        stage('Trivy image scanning') {
+            steps {
+                sh '''
+                  trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 0 backend:${BUILD_NUMBER}
+                '''
+            }
+        }
+
         // stage('Push images to ECR') {
         //     steps {
         //         sh '''
         //         aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 876358614994.dkr.ecr.eu-north-1.amazonaws.com
 
-        //         docker tag user-service:latest 876358614994.dkr.ecr.eu-north-1.amazonaws.com/user-service:latest
-        //         docker push 876358614994.dkr.ecr.eu-north-1.amazonaws.com/user-service:latest
+        //         docker tag user-service:${BUILD_NUMBER} ${ECR_USER}:${BUILD_NUMBER}
+        //         docker push ${ECR_USER}:${BUILD_NUMBER}
 
-        //         docker tag product-service:latest 876358614994.dkr.ecr.eu-north-1.amazonaws.com/product-service:latest
-        //         docker push 876358614994.dkr.ecr.eu-north-1.amazonaws.com/product-service:latest
+        //         docker tag product-service:${BUILD_NUMBER} ${ECR_PRODUCT}:${BUILD_NUMBER}
+        //         docker push ${ECR_PRODUCT}:${BUILD_NUMBER}
 
-        //         docker tag order-service:latest 876358614994.dkr.ecr.eu-north-1.amazonaws.com/order-service:latest
-        //         docker push 876358614994.dkr.ecr.eu-north-1.amazonaws.com/order-service:latest
+        //         docker tag order-service:${BUILD_NUMBER} ${ECR_ORDER}:${BUILD_NUMBER}
+        //         docker push ${ECR_ORDER}:${BUILD_NUMBER}
         //         '''
         //     }
         // }
