@@ -195,10 +195,9 @@ pipeline {
                     aws eks update-kubeconfig --name my-eks-cluster1 --region eu-north-1
                     kubectl get nodes
                     kubectl apply -f argocd/backend-application.yaml
+                    kubectl apply -f argocd/ingress-application.yaml
                     kubectl get pods -n argocd
                     kubectl get applications -n argocd
-                    kubectl get pods -n med-erp
-                    kubectl get all -n med-erp
                 '''
         }
     }
