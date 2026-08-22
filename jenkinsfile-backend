@@ -188,6 +188,20 @@ pipeline {
             }
         }
 
+        stage('ArgoCD Deployment') {
+            steps {
+                sh '''
+                    aws sts get-caller-identity
+                    aws eks update-kubeconfig --name my-eks-cluster1 --region eu-north-1
+                    kubectl get nodes
+                    kubectl apply -f argocd/med-erp-application.yaml
+                    kubectl get pods -n argocd
+                    kubectl get applications -n argocd
+                    kubectl get pods -n med-erp
+                '''
+        }
+    }
+
         // stage('Deploy to k8s') {
         //     steps {
         //         sh '''
