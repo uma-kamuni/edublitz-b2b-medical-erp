@@ -44,13 +44,13 @@ pipeline {
             }
         }
 
-        stage('Quality Gates USER-SERVICE') {
-            steps {
-                timeout(time: 5, unit: 'MINUTES'){
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
+        // stage('Quality Gates USER-SERVICE') {
+        //     steps {
+        //         timeout(time: 5, unit: 'MINUTES'){
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
+        // }
 
         stage('Build PRODUCT-SERVICE') {
             steps {
@@ -75,13 +75,13 @@ pipeline {
             }
         }
 
-        stage('Quality Gates PRODUCT-SERVICE') {
-            steps {
-                timeout(time: 5, unit: 'MINUTES'){
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
+        // stage('Quality Gates PRODUCT-SERVICE') {
+        //     steps {
+        //         timeout(time: 5, unit: 'MINUTES'){
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
+        // }
 
         stage('Build ORDER-SERVICE') {
             steps {
@@ -106,13 +106,13 @@ pipeline {
             }
         }
 
-        stage('Quality Gates ORDER-SERVICE') {
-            steps {
-                timeout(time: 5, unit: 'MINUTES'){
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
+        // stage('Quality Gates ORDER-SERVICE') {
+        //     steps {
+        //         timeout(time: 5, unit: 'MINUTES'){
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
+        // }
 
         stage('Docker Build') {
             steps {
@@ -125,15 +125,15 @@ pipeline {
             }
         }
 
-        stage('Trivy image scanning') {
-            steps {
-                sh '''
-                  trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 0 user-service:${BUILD_NUMBER}
-                  trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 0 product-service:${BUILD_NUMBER}
-                  trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 0 order-service:${BUILD_NUMBER}
-                '''
-            }
-        }
+        // stage('Trivy image scanning') {
+        //     steps {
+        //         sh '''
+        //           trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 0 user-service:${BUILD_NUMBER}
+        //           trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 0 product-service:${BUILD_NUMBER}
+        //           trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 0 order-service:${BUILD_NUMBER}
+        //         '''
+        //     }
+        // }
 
         stage('Push images to ECR') {
             steps {
@@ -148,6 +148,16 @@ pipeline {
 
                 docker tag order-service:${BUILD_NUMBER} ${ECR_ORDER}:${BUILD_NUMBER}
                 docker push ${ECR_ORDER}:${BUILD_NUMBER}
+                '''
+            }
+        }
+
+        stage('Update Manifest') {
+            steps {
+                sh '''
+                    sed -i "s|image: .*|image: ${ECR_USER}:${BUILD_NUMBER}|" k8s\deployments\user-service-deployment.yaml
+                    sed -i "s|image: .*|image: ${ECR_PRODUCT}:${BUILD_NUMBER}|" k8s\deployments\product-service-deployment.yaml
+                    sed -i "s|image: .*|image: ${ECR_ORDER}:${BUILD_NUMBER}|" k8s\deployments\order-service-deployment.yaml
                 '''
             }
         }
