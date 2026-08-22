@@ -117,7 +117,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 sh '''
-                docker rmi -f $(docker images -q)
+                // docker rmi -f $(docker images -q)
                 docker build -t user-service:${BUILD_NUMBER} ./user-service
                 docker build -t product-service:${BUILD_NUMBER} ./product-service 
                 docker build -t order-service:${BUILD_NUMBER} ./order-service
