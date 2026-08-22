@@ -49,51 +49,51 @@ pipeline {
             }
         }
 
-        // stage('Build Product-Service') {
-        //     steps {
-        //         dir('product-service') {
-        //             sh 'mvn clean package -DskipTests'
-        //         }
-        //     }
-        //     post {
-        //         success {
-        //             archiveArtifacts artifacts: 'product-service/target/*.jar', fingerprint: true
-        //         }
-        //     }
-        // }
+        stage('Build Product-Service') {
+            steps {
+                dir('product-service') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'product-service/target/*.jar', fingerprint: true
+                }
+            }
+        }
 
-        // stage('SonarQubeAnalysis - product service') {
-        //     steps {
-        //         withSonarQubeEnv('sonar') {
-        //             dir('product-service') {
-        //                 sh 'mvn sonar:sonar'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('SonarQubeAnalysis - product service') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    dir('product-service') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
 
-        // stage('Build Order Service') {
-        //     steps {
-        //         dir('order-service') {
-        //             sh 'mvn clean package -DskipTests'
-        //         }
-        //     }
-        //     post {
-        //         success {
-        //             archiveArtifacts artifacts: 'order-service/target/*.jar', fingerprint: true
-        //         }
-        //     }
-        // }
+        stage('Build Order Service') {
+            steps {
+                dir('order-service') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'order-service/target/*.jar', fingerprint: true
+                }
+            }
+        }
 
-        // stage('SonarQubeAnalysis - order service') {
-        //     steps {
-        //         withSonarQubeEnv('sonar') {
-        //             dir('order-service') {
-        //                 sh 'mvn sonar:sonar'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('SonarQubeAnalysis - order service') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    dir('order-service') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
 
         // stage('Docker Build') {
         //     steps {
