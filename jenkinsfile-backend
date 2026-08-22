@@ -198,6 +198,7 @@ pipeline {
                     kubectl get pods -n argocd
                     kubectl get applications -n argocd
                     kubectl get pods -n med-erp
+                    kubectl get all -n med-erp
                 '''
         }
     }
