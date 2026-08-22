@@ -135,22 +135,22 @@ pipeline {
             }
         }
 
-        // stage('Push images to ECR') {
-        //     steps {
-        //         sh '''
-        //         aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 876358614994.dkr.ecr.eu-north-1.amazonaws.com
+        stage('Push images to ECR') {
+            steps {
+                sh '''
+                aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 876358614994.dkr.ecr.eu-north-1.amazonaws.com
 
-        //         docker tag user-service:${BUILD_NUMBER} ${ECR_USER}:${BUILD_NUMBER}
-        //         docker push ${ECR_USER}:${BUILD_NUMBER}
+                docker tag user-service:${BUILD_NUMBER} ${ECR_USER}:${BUILD_NUMBER}
+                docker push ${ECR_USER}:${BUILD_NUMBER}
 
-        //         docker tag product-service:${BUILD_NUMBER} ${ECR_PRODUCT}:${BUILD_NUMBER}
-        //         docker push ${ECR_PRODUCT}:${BUILD_NUMBER}
+                docker tag product-service:${BUILD_NUMBER} ${ECR_PRODUCT}:${BUILD_NUMBER}
+                docker push ${ECR_PRODUCT}:${BUILD_NUMBER}
 
-        //         docker tag order-service:${BUILD_NUMBER} ${ECR_ORDER}:${BUILD_NUMBER}
-        //         docker push ${ECR_ORDER}:${BUILD_NUMBER}
-        //         '''
-        //     }
-        // }
+                docker tag order-service:${BUILD_NUMBER} ${ECR_ORDER}:${BUILD_NUMBER}
+                docker push ${ECR_ORDER}:${BUILD_NUMBER}
+                '''
+            }
+        }
 
         // stage('Deploy to k8s') {
         //     steps {
