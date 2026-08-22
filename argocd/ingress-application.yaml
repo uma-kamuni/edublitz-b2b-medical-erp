@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 
 metadata:
-  name: med-erp-backend
+  name: med-erp-ingress
   namespace: argocd
 
 spec:
@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/uma-kamuni/edublitz-b2b-medical-erp.git
     targetRevision: dev
-    path: k8s
+    path: k8s/ingress
 
   destination:
     server: https://kubernetes.default.svc
