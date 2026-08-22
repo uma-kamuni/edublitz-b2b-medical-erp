@@ -33,7 +33,7 @@ pipeline {
 
         stage('SonarQube Analysis - USER-SERVICE') {
             steps {
-                withSonarQubeEnv('sonarqube') {
+                withSonarQubeEnv('sonar') {
                     dir('user-service') {
                         sh 'mvn sonar:sonar'
                     }
