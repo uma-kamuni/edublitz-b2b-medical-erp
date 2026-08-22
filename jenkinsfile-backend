@@ -156,9 +156,9 @@ pipeline {
         stage('Update Manifest') {
             steps {
                 sh '''
-                    sed -i "s|image: .*|image: ${ECR_USER}:${BUILD_NUMBER}|" k8s\deployments\user-service-deployment.yaml
-                    sed -i "s|image: .*|image: ${ECR_PRODUCT}:${BUILD_NUMBER}|" k8s\deployments\product-service-deployment.yaml
-                    sed -i "s|image: .*|image: ${ECR_ORDER}:${BUILD_NUMBER}|" k8s\deployments\order-service-deployment.yaml
+                    sed -i "s|image: .*|image: ${ECR_USER}:${BUILD_NUMBER}|" k8s/deployments/user-service-deployment.yaml
+                    sed -i "s|image: .*|image: ${ECR_PRODUCT}:${BUILD_NUMBER}|" k8s/deployments/product-service-deployment.yaml
+                    sed -i "s|image: .*|image: ${ECR_ORDER}:${BUILD_NUMBER}|" k8s/deployments/order-service-deployment.yaml
                 '''
             }
         }
