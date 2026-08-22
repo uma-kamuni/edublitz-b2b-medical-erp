@@ -4,7 +4,7 @@ pipeline {
     }
 
     tools {
-        maven 'maven1'
+        maven 'maven'
     }
 
     environment {
@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'dev', url: 'https://github.com/mayurpandit25/edublitz-b2b-medical-erp.git'
+                git branch: 'dev', url: 'https://github.com/uma-kamuni/edublitz-b2b-medical-erp.git'
             }
         }
 
@@ -101,16 +101,16 @@ pipeline {
         stage('Push images to ECR') {
             steps {
                 sh '''
-                aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 506995420953.dkr.ecr.us-east-2.amazonaws.com
+                aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 876358614994.dkr.ecr.eu-north-1.amazonaws.com
 
-                docker tag user-service:latest 506995420953.dkr.ecr.us-east-2.amazonaws.com/users-service:latest
-                docker push 506995420953.dkr.ecr.us-east-2.amazonaws.com/users-service:latest
+                docker tag user-service:latest 876358614994.dkr.ecr.eu-north-1.amazonaws.com/user-service:latest
+                docker push 876358614994.dkr.ecr.eu-north-1.amazonaws.com/user-service:latest
 
-                docker tag product-service:latest 506995420953.dkr.ecr.us-east-2.amazonaws.com/products-service:latest
-                docker push 506995420953.dkr.ecr.us-east-2.amazonaws.com/products-service:latest
+                docker tag product-service:latest 876358614994.dkr.ecr.eu-north-1.amazonaws.com/product-service:latest
+                docker push 876358614994.dkr.ecr.eu-north-1.amazonaws.com/product-service:latest
 
-                docker tag order-service:latest 506995420953.dkr.ecr.us-east-2.amazonaws.com/orders-service:latest
-                docker push 506995420953.dkr.ecr.us-east-2.amazonaws.com/orders-service:latest
+                docker tag order-service:latest 876358614994.dkr.ecr.eu-north-1.amazonaws.com/order-service:latest
+                docker push 876358614994.dkr.ecr.eu-north-1.amazonaws.com/order-service:latest
                 '''
             }
         }
@@ -118,7 +118,7 @@ pipeline {
         stage('Deploy to k8s') {
             steps {
                 sh '''
-                aws eks update-kubeconfig --region us-east-2 --name my-eks-cluster1
+                aws eks update-kubeconfig --region eu-north-1 --name my-eks-cluster1
                 kubectl apply -f k8s/configmaps/
                 kubectl apply -f k8s/deployments/
                 kubectl apply -f k8s/hpa/

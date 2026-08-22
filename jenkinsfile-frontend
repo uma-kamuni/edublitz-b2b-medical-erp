@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'dev', url: 'https://github.com/mayurpandit25/edublitz-b2b-medical-erp.git'
+                git branch: 'dev', url: 'https://github.com/uma-kamuni/edublitz-b2b-medical-erp.git'
             }
         }
 
@@ -34,8 +34,8 @@ pipeline {
             steps {
                 dir('frontend') {
                     sh '''
-                    aws s3 sync dist/ s3://mayurcbz.space --delete
-                    aws s3 ls s3://mayurcbz.space/ --recursive
+                    aws s3 sync dist/ s3://umak.online --delete
+                    aws s3 ls s3://umak.online/ --recursive
                     '''
                 }
             }
